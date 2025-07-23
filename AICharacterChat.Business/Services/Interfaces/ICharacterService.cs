@@ -106,4 +106,3 @@ namespace AICharacterChat.Business.Services.Interfaces
         Task<bool> ValidateSystemPromptAsync(string systemPrompt, CancellationToken cancellationToken = default);
     }
 }
-

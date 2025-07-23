@@ -46,4 +46,3 @@ namespace AICharacterChat.Business.Services.Interfaces
         Task<List<string>> GetAvailableModelsAsync(CancellationToken cancellationToken = default);
     }
 }
-
