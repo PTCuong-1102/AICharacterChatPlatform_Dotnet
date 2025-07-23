@@ -1,90 +1,59 @@
-using System.Linq.Expressions;
+using AICharacterChat.Data.Models;
 
 namespace AICharacterChat.Data.Repositories.Interfaces
 {
     /// <summary>
-    /// Generic repository interface defining common CRUD operations
+    /// Repository interface for Conversation entity with specific operations
     /// </summary>
-    /// <typeparam name="T">Entity type</typeparam>
-    public interface IGenericRepository<T> where T : class
+    public interface IConversationRepository : IGenericRepository<Conversation>
     {
         /// <summary>
-        /// Get entity by ID
+        /// Get conversations by character ID
         /// </summary>
-        /// <param name="id">Entity ID</param>
-        /// <returns>Entity or null if not found</returns>
-        Task<T?> GetByIdAsync(object id);
+        /// <param name="characterId">Character ID</param>
+        /// <returns>Collection of conversations</returns>
+        Task<IEnumerable<Conversation>> GetByCharacterIdAsync(int characterId);
 
         /// <summary>
-        /// Get all entities
+        /// Get conversation with all messages
         /// </summary>
-        /// <returns>Collection of all entities</returns>
-        Task<IEnumerable<T>> GetAllAsync();
+        /// <param name="conversationId">Conversation ID</param>
+        /// <returns>Conversation with messages or null</returns>
+        Task<Conversation?> GetWithMessagesAsync(int conversationId);
 
         /// <summary>
-        /// Find entities matching the specified condition
+        /// Get conversation with character and messages
         /// </summary>
-        /// <param name="expression">Filter expression</param>
-        /// <returns>Collection of matching entities</returns>
-        Task<IEnumerable<T>> FindAsync(Expression<Func<T, bool>> expression);
+        /// <param name="conversationId">Conversation ID</param>
+        /// <returns>Conversation with character and messages or null</returns>
+        Task<Conversation?> GetWithCharacterAndMessagesAsync(int conversationId);
 
         /// <summary>
-        /// Get first entity matching the specified condition
+        /// Get recent conversations for a character
         /// </summary>
-        /// <param name="expression">Filter expression</param>
-        /// <returns>First matching entity or null</returns>
-        Task<T?> FirstOrDefaultAsync(Expression<Func<T, bool>> expression);
+        /// <param name="characterId">Character ID</param>
+        /// <param name="count">Number of conversations to return</param>
+        /// <returns>Collection of recent conversations</returns>
+        Task<IEnumerable<Conversation>> GetRecentByCharacterAsync(int characterId, int count = 10);
 
         /// <summary>
-        /// Add new entity
+        /// Get conversations started within a date range
         /// </summary>
-        /// <param name="entity">Entity to add</param>
-        /// <returns>Added entity</returns>
-        Task<T> AddAsync(T entity);
+        /// <param name="startDate">Start date</param>
+        /// <param name="endDate">End date</param>
+        /// <returns>Collection of conversations</returns>
+        Task<IEnumerable<Conversation>> GetByDateRangeAsync(DateTime startDate, DateTime endDate);
 
         /// <summary>
-        /// Add multiple entities
+        /// Search conversations by title
         /// </summary>
-        /// <param name="entities">Entities to add</param>
-        Task AddRangeAsync(IEnumerable<T> entities);
+        /// <param name="searchTerm">Search term</param>
+        /// <returns>Collection of matching conversations</returns>
+        Task<IEnumerable<Conversation>> SearchByTitleAsync(string searchTerm);
 
         /// <summary>
-        /// Update existing entity
+        /// Get the latest conversation for a character
         /// </summary>
-        /// <param name="entity">Entity to update</param>
-        void Update(T entity);
-
-        /// <summary>
-        /// Delete entity
-        /// </summary>
-        /// <param name="entity">Entity to delete</param>
-        void Delete(T entity);
-
-        /// <summary>
-        /// Delete entity by ID
-        /// </summary>
-        /// <param name="id">Entity ID</param>
-        Task DeleteByIdAsync(object id);
-
-        /// <summary>
-        /// Delete multiple entities
-        /// </summary>
-        /// <param name="entities">Entities to delete</param>
-        void DeleteRange(IEnumerable<T> entities);
-
-        /// <summary>
-        /// Check if any entity matches the specified condition
-        /// </summary>
-        /// <param name="expression">Filter expression</param>
-        /// <returns>True if any entity matches</returns>
-        Task<bool> AnyAsync(Expression<Func<T, bool>> expression);
-
-        /// <summary>
-        /// Count entities matching the specified condition
-        /// </summary>
-        /// <param name="expression">Filter expression</param>
-        /// <returns>Count of matching entities</returns>
-        Task<int> CountAsync(Expression<Func<T, bool>> expression);
-    }
-}
-
+        /// <param name="characterId">Character ID</param>
+        /// <returns>Latest conversation or null</returns>
+        Task<Conversation?> GetLatestByCharacterAsync(int characterId);
