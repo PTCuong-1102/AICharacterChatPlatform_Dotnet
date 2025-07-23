@@ -11,5 +11,196 @@
         MinWidth="800" MinHeight="600"
         Background="{DynamicResource BackgroundBrush}">
 
-  
+	<Window.Resources>
+		<ResourceDictionary>
+			<ResourceDictionary.MergedDictionaries>
+				<ResourceInclude Source="/Styles/AppTheme.axaml"/>
+			</ResourceDictionary.MergedDictionaries>
+		</ResourceDictionary>
+	</Window.Resources>
+
+	<Design.DataContext>
+		<!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
+		<vm:MainWindowViewModel/>
+	</Design.DataContext>
+
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+
+		<!-- Header with Navigation -->
+		<Border Grid.Row="0" Background="{DynamicResource PrimaryBrush}" Padding="20">
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="*"/>
+					<ColumnDefinition Width="Auto"/>
+				</Grid.ColumnDefinitions>
+
+				<TextBlock Grid.Column="0"
+                          Text="{Binding CurrentViewTitle}"
+                          FontSize="20"
+                          FontWeight="SemiBold"
+                          Foreground="{DynamicResource OnPrimaryBrush}"
+                          VerticalAlignment="Center"/>
+
+				<StackPanel Grid.Column="1" Orientation="Horizontal" Spacing="12">
+					<Button Content="💬 Trò chuyện"
+                            Command="{Binding ShowChatViewCommand}"
+                            Classes.selected="{Binding IsChatViewSelected}"
+                            Classes="NavButton"
+                            Padding="16,10"/>
+					<Button Content="👤 Quản lý nhân vật"
+                            Command="{Binding ShowCharacterManagementViewCommand}"
+                            Classes.selected="{Binding IsCharacterManagementViewSelected}"
+                            Classes="NavButton"
+                            Padding="16,10"/>
+					<Button Content="{Binding ThemeToggleText}"
+                            Command="{Binding ToggleThemeCommand}"
+                            Classes="NavButton"
+                            ToolTip.Tip="Chuyển đổi chế độ sáng/tối"
+                            Width="48" Height="48"
+                            FontSize="18"
+                            Padding="8"/>
+				</StackPanel>
+			</Grid>
+		</Border>
+
+		<!-- Main Content Area -->
+		<ContentControl Grid.Row="1"
+                       Content="{Binding CurrentView}"
+                       Margin="10"/>
+
+		<!-- Status Bar -->
+		<Border Grid.Row="2" Background="{DynamicResource SurfaceVariantBrush}"
+                BorderBrush="{DynamicResource OutlineBrush}" BorderThickness="0,1,0,0"
+                Padding="20,8">
+			<TextBlock Text="🟢 Sẵn sàng"
+                      Foreground="{DynamicResource OnSurfaceVariantBrush}"
+                      FontSize="13"/>
+		</Border>
+	</Grid>
+
+	<Window.Styles>
+		<!-- Navigation Button Styles -->
+		<Style Selector="Button.NavButton">
+			<Setter Property="Background" Value="Transparent"/>
+			<Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="BorderBrush" Value="Transparent"/>
+			<Setter Property="CornerRadius" Value="8"/>
+			<Setter Property="FontWeight" Value="Medium"/>
+		</Style>
+
+		<Style Selector="Button.NavButton:pointerover">
+			<Setter Property="Background" Value="{DynamicResource PrimaryLightBrush}"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource OnPrimaryBrush}"/>
+		</Style>
+
+		<Style Selector="Button.NavButton.selected">
+			<Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+			<Setter Property="Foreground" Value="{DynamicResource PrimaryBrush}"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+		</Style>
+
+		<Style Selector="Button.NavButton.selected:pointerover">
+			<Setter Property="Background" Value="{DynamicResource SurfaceTintBrush}"/>
+		</Style>
+
+		<!-- Default Button Styles -->
+		<Style Selector="Button">
+			<Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+			<Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="CornerRadius" Value="8"/>
+			<Setter Property="FontWeight" Value="Medium"/>
+		</Style>
+
+		<Style Selector="Button:pointerover">
+			<Setter Property="Background" Value="{DynamicResource PrimaryDarkBrush}"/>
+		</Style>
+
+		<!-- TextBox Focus Fix -->
+		<Style Selector="TextBox">
+			<Setter Property="Background" Value="{DynamicResource SurfaceVariantBrush}"/>
+			<Setter Property="Foreground" Value="{DynamicResource OnSurfaceBrush}"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource OutlineBrush}"/>
+		</Style>
+
+		<Style Selector="TextBox:focus">
+			<Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+			<Setter Property="Foreground" Value="{DynamicResource OnSurfaceBrush}"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+		</Style>
+
+		<Style Selector="TextBox:pointerover">
+			<Setter Property="Background" Value="{DynamicResource SurfaceBrush}"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource PrimaryLightBrush}"/>
+		</Style>
+
+		<!-- Button Style Classes -->
+		<Style Selector="Button.PrimaryButton">
+			<Setter Property="Background" Value="{DynamicResource PrimaryBrush}"/>
+			<Setter Property="Foreground" Value="{DynamicResource OnPrimaryBrush}"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="CornerRadius" Value="8"/>
+			<Setter Property="FontWeight" Value="SemiBold"/>
+		</Style>
+
+		<Style Selector="Button.PrimaryButton:pointerover">
+			<Setter Property="Background" Value="{DynamicResource PrimaryDarkBrush}"/>
+		</Style>
+
+		<Style Selector="Button.WarningButton">
+			<Setter Property="Background" Value="{DynamicResource WarningBrush}"/>
+			<Setter Property="Foreground" Value="White"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="CornerRadius" Value="8"/>
+			<Setter Property="FontWeight" Value="Medium"/>
+		</Style>
+
+		<Style Selector="Button.WarningButton:pointerover">
+			<Setter Property="Background" Value="#E65100"/>
+		</Style>
+
+		<Style Selector="Button.WarningButton:disabled">
+			<Setter Property="Background" Value="{DynamicResource OutlineBrush}"/>
+			<Setter Property="Foreground" Value="{DynamicResource OnSurfaceMutedBrush}"/>
+		</Style>
+
+		<Style Selector="Button.ErrorButton">
+			<Setter Property="Background" Value="{DynamicResource ErrorBrush}"/>
+			<Setter Property="Foreground" Value="White"/>
+			<Setter Property="BorderThickness" Value="0"/>
+			<Setter Property="CornerRadius" Value="8"/>
+			<Setter Property="FontWeight" Value="Medium"/>
+		</Style>
+
+		<Style Selector="Button.ErrorButton:pointerover">
+			<Setter Property="Background" Value="#C62828"/>
+		</Style>
+
+		<Style Selector="Button.ErrorButton:disabled">
+			<Setter Property="Background" Value="{DynamicResource OutlineBrush}"/>
+			<Setter Property="Foreground" Value="{DynamicResource OnSurfaceMutedBrush}"/>
+		</Style>
+
+		<Style Selector="Button.SecondaryButton">
+			<Setter Property="Background" Value="{DynamicResource SecondaryBrush}"/>
+			<Setter Property="Foreground" Value="{DynamicResource OnSecondaryBrush}"/>
+			<Setter Property="BorderThickness" Value="1"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource OutlineBrush}"/>
+			<Setter Property="CornerRadius" Value="8"/>
+			<Setter Property="FontWeight" Value="Medium"/>
+		</Style>
+
+		<Style Selector="Button.SecondaryButton:pointerover">
+			<Setter Property="Background" Value="{DynamicResource SurfaceVariantBrush}"/>
+			<Setter Property="BorderBrush" Value="{DynamicResource PrimaryBrush}"/>
+		</Style>
+	</Window.Styles>
+
 </Window>
