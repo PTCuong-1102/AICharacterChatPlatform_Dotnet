@@ -57,6 +57,3 @@ namespace AICharacterChat.Data.Repositories.Interfaces
         /// <param name="characterId">Character ID</param>
         /// <returns>Latest conversation or null</returns>
         Task<Conversation?> GetLatestByCharacterAsync(int characterId);
-    }
-}
-
